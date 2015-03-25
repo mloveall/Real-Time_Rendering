@@ -1,3 +1,3 @@
 # Real-Time rendering
-#
-# Related projects can be found in the folders
+
+Each folder in this repository consists of a project that I made related to the real-time rendering topic.
