@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Randomly Generated Fractal Tree</title>
+		<meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" />
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" />
+		<script src="../Common/webgl-utils.js"></script>
+		<script src="../Common/initShaders.js"></script>
+		<script src="../js/fractaltree.js"></script>
+
+		<!-- Fractal Tree Shaders -->
+		<script id="fractaltree-vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+
+			void main()
+			{
+			    gl_Position = vPosition;
+			}
+		</script>
+
+		<script id="fractaltree-fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			void main()
+			{
+			    gl_FragColor = vec4( 0.6, 0.6, 0.3, 1.0 );
+			}
+		</script>
+
+		<!-- Functions -->
+		<script>
+			function FractalTree() {
+				initFractalTree();
+				glRenderFractalTree();
+			}
+
+			function Quit() {
+				window.close();
+			}
+			
+			function Clear() {
+				clearCanvas();
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="container">
+			<input type="button" onclick="FractalTree()" value="Generate Fractal Tree" />
+			<input type="button" onclick="Clear()" value="Clear" />
+			<input type="button" onclick="Quit()" value="Quit" /> <br /><br />
+		</div>
+		<div><canvas id="canvas"></canvas></div>
+	</body>
+
+</html>
