@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<!-- Author: Mitchell Loveall -->
+<meta charset="UTF-8">
+<html>
+	<head>
+		<title>Solar System</title>
+		<style>
+			body
+			{
+				margin: 0px;
+				padding: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container"></div>
+		<script src="../Common/webgl-utils.js"></script>
+		<script src="../Common/three.min.js"></script>
+		<script src="../Common/orbit-controls.js"></script>
+		<script src="../js/planet.js"></script>
+		<script src="../js/sun.js"></script>
+
+		<script>
+			var externalCanvas, renderer, camera, controls, scene, container, light;
+			var sun, planetEarth;
+			var backgroundScene, backgroundCamera;
+		  
+			init ();
+			animate ();
+		  
+			function animate ()
+			{
+				requestAnimationFrame (animate);
+				render ();
+				update ();
+				controls.update ();
+			}
+		  
+			function init ()
+			{
+				// Initialize camera
+				camera = new THREE.PerspectiveCamera (45, window.innerWidth / window.innerHeight, 50, 6000);
+				camera.position.z = 1800;
+				
+				// Initialize controls
+				controls = new THREE.OrbitControls (camera);
+				controls.damping = 0.2;
+				controls.addEventListener ("change", render);
+				
+				// Initialize scene
+				scene = new THREE.Scene ();
+				THREE.ImageUtils.crossOrigin = '';
+				
+				// Initialize sun light
+				light = new THREE.PointLight ( 0xfff0f0, 1.0 );
+				light.position.set ( 0, 0, 0 );
+				scene.add (light);
+				
+				// Initialize environmental lights
+				var dirLight1 = new THREE.DirectionalLight ( 0xc8c8ff, 0.3 );
+				dirLight1.position.set ( 1, 0, 0 );
+				var dirLight2 = new THREE.DirectionalLight ( 0xc8c8ff, 0.3 );
+				dirLight2.position.set ( -1, 0, 0 );
+				var dirLight3 = new THREE.DirectionalLight ( 0xc8c8ff, 0.3 );
+				dirLight3.position.set ( 0, 0, 1 );
+				var dirLight4 = new THREE.DirectionalLight ( 0xc8c8ff, 0.3 );
+				dirLight4.position.set ( 0, 0, -1 );
+				scene.add (dirLight1);
+				scene.add (dirLight2);
+				scene.add (dirLight3);
+				scene.add (dirLight4);
+				
+				// Initialize sun
+				sun = new Sun ( 110 );
+				
+				// Initialize planets
+				var planetMercury = new Planet ("Murcury", 'http://i.imgur.com/1bUmw0U.jpg', 8, 180, 88, 0, sun);
+				planetMercury.mesh.rotation.x += 4.5;
+				var planetVenus = new Planet ("Venus", 'http://i.imgur.com/fYWHB4k.jpg', 20, 286, 225, 0, sun);
+				planetVenus.mesh.rotation.x += 4.5;
+				planetEarth = new Planet ("Earth", 'http://i.imgur.com/GNAxUAg.jpg', 22, 415, 365, 0, sun);
+				planetEarth.mesh.rotation.x += 4.5;
+				var moon = new Planet ("Moon", 'http://i.imgur.com/1bUmw0U.jpg', 6, 55, 30, 0, planetEarth);
+				var planetMars = new Planet ("Mars", 'http://i.imgur.com/ACGzK6C.jpg', 12, 558, 687, 0, sun);
+				planetMars.mesh.rotation.x += 4.5;
+				var planetJupiter = new Planet ("Jupiter", 'http://i.imgur.com/wBGiUO2.jpg', 70, 794, 4344, 0, sun);
+				planetJupiter.mesh.rotation.x += 4.5;
+				var planetSaturn = new Planet ("Saturn", 'http://i.imgur.com/vxVpF3e.jpg', 60, 1145, 10840, 0, sun);
+				planetSaturn.mesh.rotation.x += 4.5;
+				
+				// Create chil & parent tree
+				sun.AddChild (planetMercury);
+				sun.AddChild (planetVenus);
+				sun.AddChild (planetEarth);
+				sun.AddChild (planetMars);
+				sun.AddChild (planetJupiter);
+				sun.AddChild (planetSaturn);
+				planetEarth.AddChild (moon);
+				
+				// Add all bodies to the scene
+				scene.add (sun.mesh);
+				scene.add (planetMercury.mesh);
+				scene.add (planetVenus.mesh);
+				scene.add (planetEarth.mesh);
+				scene.add (moon.mesh);
+				scene.add (planetMars.mesh);	
+				scene.add (planetJupiter.mesh);
+				scene.add (planetSaturn.mesh);
+				
+				// Initialize starfield
+				var bgGeometry = new THREE.SphereGeometry ( 2000, 32, 32 );
+				var bgMaterial = new THREE.MeshBasicMaterial ();
+				bgMaterial.map = THREE.ImageUtils.loadTexture ('http://i.imgur.com/3NQcM7r.jpg');
+				bgMaterial.side = THREE.BackSide;
+				var bgMesh  = new THREE.Mesh (bgGeometry, bgMaterial);
+				scene.add (bgMesh);
+				
+				// Initialize renderer
+				renderer = new THREE.WebGLRenderer ({ antialias: false });
+				renderer.setSize (window.innerWidth-4, window.innerHeight-4);
+				container = document.getElementById ('container');
+				container.appendChild (renderer.domElement);
+				animate ();
+			}
+		  
+			function render ()
+			{
+				sun.mesh.rotation.x += 0.0005;
+				sun.mesh.rotation.y += 0.001;
+				planetEarth.mesh.rotation.y -= 0.04;
+				renderer.render (scene, camera);
+			}
+		  
+			function update ()
+		    {
+				sun.Update ();
+			}
+		</script>
+	</body>
+</html>
