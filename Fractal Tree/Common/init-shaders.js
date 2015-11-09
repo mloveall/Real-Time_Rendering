@@ -1,7 +1,7 @@
-//
-//  initShaders.js
-//
-
+/**
+ * @source OpenGL Programming Guide: The Official Guide to Learning OpenGL
+ */
+ 
 function initShaders( gl, vertexShaderId, fragmentShaderId )
 {
     var vertShdr;

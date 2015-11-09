@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-
+<!-- Author: Mitchell Loveall -->
 <html>
 	<head>
-		<title>Randomly Generated Fractal Tree</title>
+		<title>Fractal Tree</title>
 		<meta http-equiv="content-type" content="text/html; charset=windows-1252" />
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" />
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" />
 		<script src="../Common/webgl-utils.js"></script>
-		<script src="../Common/initShaders.js"></script>
-		<script src="../js/fractaltree.js"></script>
+		<script src="../Common/init-shaders.js"></script>
+		<script src="../js/fractal-tree.js"></script>
 
 		<!-- Fractal Tree Shaders -->
-		<script id="fractaltree-vertex-shader" type="x-shader/x-vertex">
+		<script id="fractal-tree-vertex-shader" type="x-shader/x-vertex">
 			attribute vec4 vPosition;
 
 			void main()
@@ -20,7 +20,7 @@
 			}
 		</script>
 
-		<script id="fractaltree-fragment-shader" type="x-shader/x-fragment">
+		<script id="fractal-tree-fragment-shader" type="x-shader/x-fragment">
 			precision mediump float;
 
 			void main()
